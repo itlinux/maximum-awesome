@@ -1,32 +1,45 @@
+"Configure Vundle folding
+  filetype on " without this vim emits a zero exit status, later, because of :ft off
+  filetype off
+  set rtp+=~/.vim/bundle/Vundle.vim
+  call vundle#begin()
+
+  " install Vundle bundles
+  if filereadable(expand("~/.vimrc.bundles"))
+    source ~/.vimrc.bundles
+    source ~/.vimrc.bundles.local
+    source ~/.vimrc.yaml.local
+  endif 
 " Setting options 
-set nocompatible
-set undofile
-set undodir=~/.maximum-awesome/.undo/
-set history=5000
-set autoindent
-set autoread                                                 " reload files when changed on disk, i.e. via `git checkout`
-set backspace=2                                              " Fix broken backspace in some setups
-set backupcopy=yes                                           " see :help crontab
-set clipboard=unnamed                                        " yank and paste with the system clipboard
-set directory-=.                                             " don't store swapfiles in the current directory
-set noswapfile                                               " do not set swapfiles
-set encoding=utf-8
-set expandtab                                                " expand tabs to spaces
-set ignorecase                                               " case-insensitive search
-set incsearch                                                " search as you type
-set laststatus=2                                             " always show statusline
-set list                                                     " show trailing whitespace
-set listchars=tab:▸\ ,trail:·,eol:¬
-set ruler                                                    " show where you are
-set scrolloff=3                                              " show context above/below cursorline
-set shiftwidth=2                                             " normal mode indentation commands use 2 spaces
-set showcmd
-set smartcase                                                " case-sensitive search if any caps
-set softtabstop=2                                            " insert mode tab and backspace use 2 spaces
-set tabstop=8                                                " actual tabs occupy 8 characters
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip                     " MacOSX/Linux
-set wildmenu                                                 " show a navigable menu for tab completion
-set wildmode=longest,list,full
+  set nocompatible
+  set undofile
+  set undodir=~/.maximum-awesome/.undo/
+  set history=5000
+  set autoindent
+  set autoread                                                 " reload files when changed on disk, i.e. via `git checkout`
+  set backspace=2                                              " Fix broken backspace in some setups
+  set backupcopy=yes                                           " see :help crontab
+  set clipboard=unnamed                                        " yank and paste with the system clipboard
+  set directory-=.                                             " don't store swapfiles in the current directory
+  set noswapfile                                               " do not set swapfiles
+  set encoding=utf-8
+  set expandtab                                                " expand tabs to spaces
+  set ignorecase                                               " case-insensitive search
+  set incsearch                                                " search as you type
+  set laststatus=2                                             " always show statusline
+  set list                                                     " show trailing whitespace
+  set listchars=tab:▸\ ,trail:·,eol:¬
+  set ruler                                                    " show where you are
+  set scrolloff=3                                              " show context above/below cursorline
+  set shiftwidth=2                                             " normal mode indentation commands use 2 spaces
+  set showcmd
+  set smartcase                                                " case-sensitive search if any caps
+  set softtabstop=2                                            " insert mode tab and backspace use 2 spaces
+  set tabstop=8                                                " actual tabs occupy 8 characters
+  set wildignore+=*/tmp/*,*.so,*.swp,*.zip                     " MacOSX/Linux
+  set wildmode=longest,list,full
+  set wildmenu                                                 " show a navigable menu for tab completion
+
 "Options to set diffent colors
 "let &t_8f = "\<Esc>[38;5;%1u;%2u;%1um"
 "let &t_8b = "\<Esc>[33;2;%lu;%lu;%lum"
@@ -42,43 +55,13 @@ set copyindent
   set foldcolumn=3
 
 " enable syntax highlighting
-syntax on
-"syntax enable
+syntax enable
 
 " Tmux & Clipboard
 set clipboard^=unnamed
 
-" limit to 79
-" Autocmds
-  augroup collumnLimit
-  autocmd!
-  autocmd BufEnter,WinEnter,FileType scala,java,asciidoc,yaml,yml,bash
-  \ highlight CollumnLimit ctermbg=DarkGrey guibg=DarkGrey
-  let collumnLimit = 79 " feel free to customize
-  let pattern =
-  \ '\%<' . (collumnLimit+1) . 'v.\%>' . collumnLimit . 'v'
-  autocmd BufEnter,WinEnter,FileType scala,java,asciidoc,yaml,yml,bash
-  \ let w:m1=matchadd('CollumnLimit', pattern, -1)
-  augroup END
-
-
-" configure Vundle
-    filetype on " without this vim emits a zero exit status, later, because of :ft off
-    filetype off
-    set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" install Vundle bundles
-if filereadable(expand("~/.vimrc.bundles"))
-  source ~/.vimrc.bundles
-  source ~/.vimrc.bundles.local
-  source ~/.vimrc.yaml.local
-endif
-call vundle#end()
-
 " ensure ftdetect et al work by including this after the Vundle stuff
 filetype plugin indent on
-
 
 " Enable basic mouse behavior such as resizing buffers. Off for iTerm2 on Mac
 " section on preference to copy on select.
@@ -103,13 +86,36 @@ nnoremap <leader>T :CtrlPClearCache<CR>:CtrlP<CR>
 nnoremap <leader>] :TagbarToggle<CR>
 nnoremap <leader>y :call system('nc -U ~/.clipper.sock', @0)<CR>
 nnoremap <leader><space> :call whitespace#strip_trailing()<CR>
-nnoremap <leader>g :GitGutterToggle<CR>
+" fugitive git bindings
+nnoremap <leader>gt :GitGutterToggle<CR>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>gp :Gpush<CR>
+nnoremap <space>ga :Git add %:p<CR><CR>
+nnoremap <space>gc :Gcommit -v -q<CR>
+nnoremap <space>gtt :Gcommit -v -q %:p<CR>
+nnoremap <space>gd :Gdiff<CR>
+nnoremap <space>ge :Gedit<CR>
+nnoremap <space>gr :Gread<CR>
+nnoremap <space>gw :Gwrite<CR><CR>
+nnoremap <space>gl :silent! Glog<CR>:bot copen<CR>
+nnoremap <space>gp :Ggrep<Space>
+nnoremap <space>gm :Gmove<Space>
+nnoremap <space>gb :Git branch<Space>
+nnoremap <space>go :Git checkout<Space>
+nnoremap <space>gps :Dispatch! git push<CR>
+nnoremap <space>gpl :Dispatch! git pull<CR>
 noremap <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+
+" Options for fugitive 
+xnoremap dp :diffput<cr>
+xnoremap do :diffget<cr>
 
 " in case you forgot to sudo
 cnoremap w!! %!sudo tee > /dev/null %
 
 " plugin settings asciidoct/asciidoctor 
+  let g:gitgutter_highlight_lines = 1
   let g:ctrlp_match_window = 'order:ttb,max:20'
   let g:NERDSpaceDelims=1
   let g:gitgutter_enabled = 0
@@ -148,10 +154,27 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
 
+" Adding supertab from https://raw.githubusercontent.com/ervandew/supertab/
+" option 1 is default 
+let g:SuperTabDefaultCompletionType = "<c-x><c-u>"
+
 " setting bad words to underline instead of highlighed
 hi clear SpellBad
 hi SpellBad cterm=underline
 hi SpellBad ctermfg=red guifg=red
+
+" limit to 79
+" Autocmd for collumnLimit
+  augroup collumnLimit
+  autocmd!
+  autocmd BufEnter,WinEnter,FileType scala,java,asciidoc,yaml,yml,bash
+  \ highlight CollumnLimit ctermbg=DarkGrey guibg=DarkGrey
+  let collumnLimit = 79 " feel free to customize
+  let pattern =
+  \ '\%<' . (collumnLimit+1) . 'v.\%>' . collumnLimit . 'v'
+  autocmd BufEnter,WinEnter,FileType scala,java,asciidoc,yaml,yml,bash
+  \ let w:m1=matchadd('CollumnLimit', pattern, -1)
+  augroup END
 
 "Spelling and file types
   augroup markdownSpell
@@ -166,42 +189,31 @@ hi SpellBad ctermfg=red guifg=red
     autocmd BufRead,BufNewFile *.adoc setlocal spell
   augroup END
 
-
   "Jinja 2
   autocmd BufNewFile,BufRead *.html,*.htm,*.shtml,*.stm set ft=jinja spell
   " yaml,yml,bash spelling
   autocmd Filetype yaml setlocal spell
   autocmd BufNewFile,BufRead *.bash,*.sh set ft=bash spell 
 
-"
-" Fix Cursor in TMUX
-if exists('$TMUX')
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-else
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-endif
+  " Vagrant
+  autocmd BufNewFile,BufRead Vagrantfile ft=ruby 
 
+  " Terraform
+  autocmd BufNewFile,BufRead *.tf ft=terraform 
+
+" Fix Cursor in TMUX
+  if exists('$TMUX')
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+  else
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+  endif
 
 " Don't copy the contents of an overwritten selection.
 vnoremap p "_dP
 
-" Go crazy!
-if filereadable(expand("~/.vimrc.local"))
-  " In your .vimrc.local, you might like:
-  "
-  " set autowrite
-  " set nocursorline
-  " set nowritebackup
-  " set whichwrap+=<,>,h,l,[,] " Wrap arrow keys between lines
-  "
-  " autocmd! bufwritepost .vimrc source ~/.vimrc
-  " noremap! jj <ESC>
-  source ~/.vimrc.local
-endif
-
-" Line Numbers 
+" Line Numbers Options
 function! NumberToggle()
    if(&relativenumber == 1)
         set nornu
@@ -210,5 +222,4 @@ function! NumberToggle()
         set relativenumber
    endif
   endfunc
-" nnoremap <C-n> :call NumberToggle()<cr>
 call NumberToggle()
